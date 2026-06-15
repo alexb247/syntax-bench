@@ -1,0 +1,7 @@
+# The benchmark core and baselines use only the Python standard library.
+# These are optional, needed only when you wire in real models.
+
+# openai>=1.0          # for OpenAIModel
+# anthropic>=0.40      # for AnthropicModel
+# transformers>=4.44   # for HuggingFaceModel (open models, run locally)
+# torch>=2.0           # backend for transformers

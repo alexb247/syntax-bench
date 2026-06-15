@@ -1,0 +1,42 @@
+{
+  "phenomena": [
+    "agreement",
+    "filler_gap",
+    "npi"
+  ],
+  "models": [
+    {
+      "name": "shorter-sentence-heuristic",
+      "overall": 0.8333333333333334,
+      "by_phenomenon": {
+        "agreement": 1.0,
+        "filler_gap": 1.0,
+        "npi": 0.5
+      },
+      "position_bias": 0.06666666666666665,
+      "n_items": 15
+    },
+    {
+      "name": "always-first",
+      "overall": 0.5,
+      "by_phenomenon": {
+        "agreement": 0.5,
+        "filler_gap": 0.5,
+        "npi": 0.5
+      },
+      "position_bias": 1.0,
+      "n_items": 15
+    },
+    {
+      "name": "random-baseline",
+      "overall": 0.4,
+      "by_phenomenon": {
+        "agreement": 0.5,
+        "filler_gap": 0.2,
+        "npi": 0.5
+      },
+      "position_bias": 0.26666666666666666,
+      "n_items": 15
+    }
+  ]
+}

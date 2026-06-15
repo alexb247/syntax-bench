@@ -1,0 +1,15 @@
+{"id": "agr-01", "phenomenon": "agreement", "good": "The key to the cabinets is on the table.", "bad": "The key to the cabinets are on the table.", "note": "Singular subject 'key' with plural distractor 'cabinets' (agreement attraction)."}
+{"id": "agr-02", "phenomenon": "agreement", "good": "The author that the critics praised was famous.", "bad": "The author that the critics praised were famous.", "note": "Singular head 'author' across an intervening plural 'critics'."}
+{"id": "agr-03", "phenomenon": "agreement", "good": "The path to the mountains was very steep.", "bad": "The path to the mountains were very steep.", "note": "Singular subject 'path' with plural distractor 'mountains'."}
+{"id": "agr-04", "phenomenon": "agreement", "good": "The painting on the walls is beautiful.", "bad": "The painting on the walls are beautiful.", "note": "Singular subject 'painting' with plural distractor 'walls'."}
+{"id": "agr-05", "phenomenon": "agreement", "good": "The list of the senators was long.", "bad": "The list of the senators were long.", "note": "Singular subject 'list' with plural distractor 'senators'."}
+{"id": "npi-01", "phenomenon": "npi", "good": "Nobody has any money left.", "bad": "Somebody has any money left.", "note": "NPI 'any' licensed by 'nobody', unlicensed under positive 'somebody'."}
+{"id": "npi-02", "phenomenon": "npi", "good": "She has not eaten anything today.", "bad": "She has eaten anything today.", "note": "NPI 'anything' requires the negation."}
+{"id": "npi-03", "phenomenon": "npi", "good": "No student has ever finished early.", "bad": "Some student has ever finished early.", "note": "NPI 'ever' licensed by 'no', unlicensed under 'some'."}
+{"id": "npi-04", "phenomenon": "npi", "good": "The teacher did not assign any homework.", "bad": "The teacher assigned any homework.", "note": "NPI 'any' requires the negation."}
+{"id": "npi-05", "phenomenon": "npi", "good": "I doubt that he cares at all.", "bad": "I think that he cares at all.", "note": "NPI 'at all' licensed by 'doubt', unlicensed under 'think'."}
+{"id": "fgd-01", "phenomenon": "filler_gap", "good": "Which book did the student read yesterday?", "bad": "Which book did the student read the magazine yesterday?", "note": "Filler 'which book' needs an empty object position; the bad item fills the gap."}
+{"id": "fgd-02", "phenomenon": "filler_gap", "good": "What do you believe John saw?", "bad": "What do you believe John saw the movie?", "note": "Filled gap: the object position is already occupied."}
+{"id": "fgd-03", "phenomenon": "filler_gap", "good": "Who did you say Mary met?", "bad": "Who did you say Mary met Sue?", "note": "Filled gap in the embedded clause."}
+{"id": "fgd-04", "phenomenon": "filler_gap", "good": "Which car did she drive to work?", "bad": "Which car did she drive the truck to work?", "note": "Filled gap: object position already occupied."}
+{"id": "fgd-05", "phenomenon": "filler_gap", "good": "What did the chef cook for dinner?", "bad": "What did the chef cook the pasta for dinner?", "note": "Filled gap: object position already occupied."}
