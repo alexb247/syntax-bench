@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>syntax-bench · a grammaticality benchmark for language models</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E9EEF2;
+    --card:#FBFCFD;
+    --ink:#1C2A33;
+    --ink-2:#5E6F79;
+    --ink-3:#9AA8B0;
+    --rule:#D2DCE2;
+    --red:#BE3A2B;
+    --red-soft:#F3DED9;
+    --bar:#2A3A44;
+    --bar-muted:#B2C0C8;
+    --track:#DAE2E7;
+    --serif:"Spectral",Georgia,serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:clamp(2rem,5vw,4.5rem) clamp(1.25rem,5vw,2.5rem) 5rem;
+  }
+
+  /* ---- shared label / mono utility ---- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink-2);
+    font-weight:500;
+  }
+
+  /* ---- hero ---- */
+  .hero{padding-bottom:clamp(2.5rem,6vw,4rem)}
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(2.1rem,6.2vw,3.9rem);
+    line-height:1.04;
+    letter-spacing:-.015em;
+    margin:1.1rem 0 0;
+    max-width:16ch;
+  }
+  .pair{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:clamp(1.25rem,3vw,1.9rem) clamp(1.25rem,3vw,2rem);
+    margin:1.9rem 0 1.6rem;
+    box-shadow:0 1px 0 rgba(28,42,51,.03),0 14px 30px -24px rgba(28,42,51,.28);
+    transition:opacity .38s ease;
+  }
+  .pair.fading{opacity:0}
+  .pair .line{
+    display:grid;
+    grid-template-columns:1.4em 1fr;
+    align-items:baseline;
+    font-size:clamp(1.15rem,2.6vw,1.5rem);
+    line-height:1.42;
+  }
+  .pair .line + .line{margin-top:.35rem}
+  .pair .mark{
+    font-family:var(--mono);
+    color:var(--red);
+    font-weight:600;
+    font-size:1.05em;
+  }
+  .pair .cap{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-2);
+    margin-top:1.1rem;
+    padding-top:.95rem;
+    border-top:1px solid var(--rule);
+  }
+  .hero .thesis{
+    font-size:clamp(1.02rem,2.1vw,1.18rem);
+    color:var(--ink-2);
+    max-width:62ch;
+    margin:0;
+  }
+  .hero .thesis em{color:var(--ink);font-style:italic}
+
+  /* ---- section heading ---- */
+  .shead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:1rem;
+    border-bottom:1.5px solid var(--ink);
+    padding-bottom:.55rem;
+    margin-bottom:.2rem;
+  }
+  .shead .count{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);letter-spacing:.08em;white-space:nowrap}
+  .scap{
+    font-size:1rem;
+    color:var(--ink-2);
+    max-width:62ch;
+    margin:.9rem 0 1.6rem;
+  }
+
+  /* ---- leaderboard ---- */
+  .board{margin-top:clamp(2.5rem,6vw,4rem)}
+  .lb-head,.row{
+    display:grid;
+    grid-template-columns:minmax(0,2.4fr) minmax(150px,2.2fr) repeat(3,minmax(0,.8fr)) minmax(0,1fr);
+    gap:.5rem 1rem;
+    align-items:center;
+  }
+  .lb-head{
+    font-family:var(--mono);
+    font-size:.68rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--ink-2);
+    padding:0 0 .55rem;
+  }
+  .lb-head .num{text-align:right}
+  .row{
+    padding:1.05rem 0;
+    border-top:1px solid var(--rule);
+  }
+  .row:first-of-type{border-top:none}
+
+  .m-name{font-family:var(--mono);min-width:0}
+  .m-name .name{font-weight:600;font-size:.95rem;color:var(--ink);word-break:break-word}
+  .row.baseline .m-name .name{color:var(--ink-2);font-weight:500}
+  .m-name .sub{font-size:.7rem;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-top:.18rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+  .tag{border:1px solid var(--rule);border-radius:3px;padding:.05rem .34rem;color:var(--ink-2)}
+  .flag{border:1px solid var(--red);color:var(--red);background:var(--red-soft);border-radius:3px;padding:.05rem .34rem;cursor:help}
+
+  /* overall bar */
+  .bar{position:relative}
+  .bar .track{position:relative;height:10px;background:var(--track);border-radius:2px;overflow:hidden}
+  .bar .fill{position:absolute;inset:0 auto 0 0;background:var(--bar);border-radius:2px}
+  .row.baseline .bar .fill{background:var(--bar-muted)}
+  .bar .chance{position:absolute;top:-2px;bottom:-2px;left:50%;width:1px;background:var(--ink-3);opacity:.55}
+  .bar .val{font-family:var(--mono);font-size:.86rem;font-weight:500;margin-top:.4rem;display:block}
+
+  .ph{font-family:var(--mono);font-size:.86rem;text-align:right;color:var(--ink);display:flex;justify-content:flex-end;gap:.5rem;align-items:baseline}
+  .row.baseline .ph{color:var(--ink-2)}
+  .ph .ph-l{display:none;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+
+  .bias{font-family:var(--mono);font-size:.86rem;text-align:right}
+  .bias .lvl{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:.15rem}
+  .bias.hi{color:var(--red)}
+  .bias.hi .lvl{color:var(--red)}
+
+  .legend{
+    font-family:var(--mono);
+    font-size:.7rem;
+    color:var(--ink-2);
+    line-height:1.7;
+    margin-top:1.5rem;
+    padding-top:1.1rem;
+    border-top:1px solid var(--rule);
+  }
+  .legend .star{color:var(--red);font-weight:600}
+
+  /* ---- try your own ---- */
+  .try{margin-top:clamp(2.5rem,6vw,4rem)}
+  .try .panel{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:clamp(1.25rem,3vw,1.8rem);
+    margin-top:1.5rem;
+  }
+  .try .panel p{margin:0 0 1.2rem;color:var(--ink-2);max-width:58ch}
+  .field{display:grid;grid-template-columns:1.4em 1fr;align-items:center;gap:0 0;margin-bottom:.7rem}
+  .field .mark{font-family:var(--mono);font-weight:600}
+  .field .mark.bad{color:var(--red)}
+  .field input{
+    width:100%;
+    font-family:var(--serif);
+    font-size:1.02rem;
+    color:var(--ink);
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--rule);
+    padding:.5rem .2rem;
+  }
+  .field input::placeholder{color:var(--ink-3)}
+  .field input:disabled{cursor:not-allowed}
+  .try .action{display:flex;align-items:center;gap:1rem;margin-top:1.3rem;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);
+    font-size:.78rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:.62rem 1.15rem;
+    border-radius:3px;
+    border:1px solid var(--ink);
+    background:var(--ink);
+    color:#fff;
+    opacity:.4;
+    cursor:not-allowed;
+  }
+  .try .note{font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}
+  .try .note b{color:var(--ink);font-weight:600}
+
+  /* ---- footer ---- */
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.4rem;border-top:1px solid var(--rule)}
+  footer .how{color:var(--ink-2);max-width:64ch;margin:0 0 1.1rem}
+  footer .meta{font-family:var(--mono);font-size:.74rem;color:var(--ink-2);display:flex;gap:1.2rem;flex-wrap:wrap}
+  footer a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--red)}
+  footer a:hover{color:var(--red)}
+
+  /* ---- entrance ---- */
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .anim{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.3,1) forwards}
+  .d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.28s}.d4{animation-delay:.4s}
+
+  /* ---- mobile ---- */
+  @media(max-width:660px){
+    .lb-head{display:none}
+    .row{grid-template-columns:1fr;gap:.85rem;padding:1.3rem 0}
+    .ph{justify-content:space-between}
+    .ph .ph-l{display:inline}
+    .bias{display:flex;justify-content:space-between;text-align:left}
+    .bias .lvl{display:inline;margin:0}
+    .phgroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem}
+  }
+  @media(min-width:661px){.phgroup{display:contents}}
+
+  @media(prefers-reduced-motion:reduce){
+    .anim{animation:none;opacity:1}
+    .pair{transition:none}
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="eyebrow anim d1">syntax-bench · a grammaticality benchmark</div>
+    <h1 class="anim d2">One of these sentences is wrong.</h1>
+
+    <div class="pair anim d3" id="pair">
+      <div class="line"><span class="mark" aria-hidden="true">&nbsp;</span><span id="good"></span></div>
+      <div class="line"><span class="mark" aria-hidden="true">*</span><span id="bad"></span></div>
+      <div class="cap"><span id="phen"></span> · can a model tell?</div>
+    </div>
+
+    <p class="thesis anim d4">A native speaker knows instantly, and marks the second with a <em>*</em>. This benchmark measures whether language models do too, across three syntactic phenomena where the only difference is a single, structurally meaningful change.</p>
+  </header>
+
+  <section class="board">
+    <div class="shead">
+      <span class="eyebrow">Leaderboard</span>
+      <span class="count" id="board-count"></span>
+    </div>
+    <p class="scap">How often each model picks the sentence a native speaker would accept, with every pair scored in both presentation orders and averaged.</p>
+
+    <div class="lb-head">
+      <span>model</span>
+      <span>accuracy</span>
+      <span class="num" id="h0">agr</span>
+      <span class="num" id="h1">npi</span>
+      <span class="num" id="h2">f-gap</span>
+      <span class="num">pos. bias</span>
+    </div>
+    <div id="rows"></div>
+
+    <div class="legend">
+      <div>Baselines are shown muted: they carry no grammatical knowledge and exist as reference points. The vertical tick on each bar marks 50%, the score of pure chance.</div>
+      <div><span class="star">Red flags</span> mark a result a no-syntax heuristic could reach (the items are gameable by surface cues), or a large gap between the two presentation orders (the model is judging position, not grammar).</div>
+    </div>
+  </section>
+
+  <section class="try">
+    <div class="shead">
+      <span class="eyebrow">Try your own pair</span>
+      <span class="count">next</span>
+    </div>
+    <div class="panel">
+      <p>Enter a grammatical sentence and a minimal variant, and watch each model judge which one is acceptable, live.</p>
+      <div class="field"><span class="mark">&nbsp;</span><input type="text" disabled placeholder="The key to the cabinets is on the table."></div>
+      <div class="field"><span class="mark bad">*</span><input type="text" disabled placeholder="The key to the cabinets are on the table."></div>
+      <div class="action">
+        <button class="btn" disabled>Judge this pair</button>
+        <span class="note"><b>Live judging connects next</b>, once the model backend is wired in.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="how">Each item is a minimal pair: two sentences differing in exactly one place, so judging it correctly takes sensitivity to that one feature and nothing else. Models choose by forced choice. Scoring, item construction, and the full method live in the repository.</p>
+    <div class="meta">
+      <a id="repo" href="https://github.com/alexb247/syntax-bench">github.com/alexb247/syntax-bench</a>
+      <span id="updated"></span>
+    </div>
+  </footer>
+</main>
+
+<script>
+  const FALLBACK = {
+    phenomena:["agreement","filler_gap","npi"],
+    models:[
+      {name:"shorter-sentence-heuristic",overall:0.8333333333333334,by_phenomenon:{agreement:1.0,filler_gap:1.0,npi:0.5},position_bias:0.06666666666666665,n_items:15},
+      {name:"always-first",overall:0.5,by_phenomenon:{agreement:0.5,filler_gap:0.5,npi:0.5},position_bias:1.0,n_items:15},
+      {name:"random-baseline",overall:0.4,by_phenomenon:{agreement:0.5,filler_gap:0.2,npi:0.5},position_bias:0.26666666666666666,n_items:15}
+    ]
+  };
+
+  const PAIRS = [
+    {phenomenon:"agreement attraction",good:"The key to the cabinets is on the table.",bad:"The key to the cabinets are on the table."},
+    {phenomenon:"NPI licensing",good:"Nobody has any money left.",bad:"Somebody has any money left."},
+    {phenomenon:"filler-gap dependency",good:"Which book did the student read yesterday?",bad:"Which book did the student read the magazine yesterday?"}
+  ];
+
+  const ABBR = {agreement:"agr",npi:"npi",filler_gap:"f-gap"};
+  const FULL = {agreement:"Agreement attraction",npi:"NPI licensing",filler_gap:"Filler-gap"};
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pct = x => (x*100).toFixed(1);
+
+  // hero rotation
+  const goodEl=document.getElementById("good"),badEl=document.getElementById("bad"),phenEl=document.getElementById("phen"),pairEl=document.getElementById("pair");
+  function showPair(p){goodEl.textContent=p.good;badEl.textContent=p.bad;phenEl.textContent=p.phenomenon;}
+  showPair(PAIRS[0]);
+  if(!reduce){
+    let i=0;
+    setInterval(()=>{
+      pairEl.classList.add("fading");
+      setTimeout(()=>{i=(i+1)%PAIRS.length;showPair(PAIRS[i]);pairEl.classList.remove("fading");},380);
+    },4800);
+  }
+
+  function colOrder(phenomena){
+    const pref=["agreement","npi","filler_gap"];
+    return pref.filter(p=>phenomena.includes(p)).concat(phenomena.filter(p=>!pref.includes(p)));
+  }
+
+  function renderBoard(data){
+    const cols=colOrder(data.phenomena);
+    ["h0","h1","h2"].forEach((id,k)=>{const el=document.getElementById(id);if(el)el.textContent=cols[k]?ABBR[cols[k]]||cols[k]:"";});
+
+    const models=[...data.models].sort((a,b)=>b.overall-a.overall);
+    const items=models[0]?.n_items??"";
+    document.getElementById("board-count").textContent=`${items} items · ${models.length} models`;
+
+    const rows=document.getElementById("rows");
+    rows.innerHTML="";
+    for(const m of models){
+      const baseline=!m.name.includes(":");
+      const row=document.createElement("div");
+      row.className="row"+(baseline?" baseline":"");
+
+      // name + provenance + flags
+      let nameMain=m.name, sub="";
+      if(!baseline){const[prov,...rest]=m.name.split(":");nameMain=rest.join(":");sub=`<span class="tag">${prov}</span>`;}
+      else{sub=`<span class="tag">baseline</span>`;}
+      const flags=[];
+      if(baseline && m.overall>0.6) flags.push(`<span class="flag" title="A heuristic with no grammatical knowledge reaches this score, so some items are solvable by surface cues like length.">gameable</span>`);
+      if(m.position_bias>0.5) flags.push(`<span class="flag" title="Large gap between the two presentation orders. The model is tracking position, not grammar.">position bias</span>`);
+
+      const biasPctV=pct(m.position_bias);
+      const biasLvl=m.position_bias<0.15?"low":m.position_bias<0.4?"some":"high";
+      const biasHi=m.position_bias>=0.4;
+
+      let phCells="";
+      for(const c of cols){
+        const v=m.by_phenomenon[c];
+        phCells+=`<div class="ph"><span class="ph-l">${ABBR[c]||c}</span><span>${v==null?"—":pct(v)}</span></div>`;
+      }
+
+      row.innerHTML=`
+        <div class="m-name">
+          <div class="name">${nameMain}</div>
+          <div class="sub">${sub}${flags.join("")}</div>
+        </div>
+        <div class="bar">
+          <div class="track"><div class="fill" style="width:${Math.max(0,Math.min(100,m.overall*100))}%"></div><div class="chance"></div></div>
+          <span class="val">${pct(m.overall)}%</span>
+        </div>
+        <div class="phgroup">${phCells}</div>
+        <div class="bias ${biasHi?"hi":""}">${biasPctV}%<span class="lvl">${biasLvl}</span></div>`;
+      rows.appendChild(row);
+    }
+  }
+
+  (async function(){
+    let data;
+    try{
+      const r=await fetch("./results.json",{cache:"no-store"});
+      if(!r.ok) throw new Error();
+      data=await r.json();
+      document.getElementById("updated").textContent="live from results.json";
+    }catch(e){
+      data=FALLBACK;
+      document.getElementById("updated").textContent="sample results";
+    }
+    renderBoard(data);
+  })();
+</script>
+</body>
+</html>
