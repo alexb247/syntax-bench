@@ -1,42 +1,75 @@
 {
   "phenomena": [
-    "agreement",
-    "filler_gap",
-    "npi"
+    "island",
+    "npi",
+    "that-trace"
   ],
   "models": [
     {
-      "name": "shorter-sentence-heuristic",
-      "overall": 0.8333333333333334,
+      "name": "anthropic:claude-opus-4-8",
+      "overall": 1.0,
       "by_phenomenon": {
-        "agreement": 1.0,
-        "filler_gap": 1.0,
-        "npi": 0.5
+        "island": 1.0,
+        "npi": 1.0,
+        "that-trace": 1.0
       },
-      "position_bias": 0.06666666666666665,
-      "n_items": 15
+      "position_bias": 0.0,
+      "n_items": 36
+    },
+    {
+      "name": "anthropic:claude-haiku-4-5-20251001",
+      "overall": 0.9722222222222222,
+      "by_phenomenon": {
+        "island": 0.9166666666666666,
+        "npi": 1.0,
+        "that-trace": 1.0
+      },
+      "position_bias": 0.05555555555555558,
+      "n_items": 36
+    },
+    {
+      "name": "anthropic:claude-sonnet-4-6",
+      "overall": 0.9444444444444444,
+      "by_phenomenon": {
+        "island": 0.9166666666666666,
+        "npi": 0.9583333333333334,
+        "that-trace": 0.9583333333333334
+      },
+      "position_bias": 0.11111111111111116,
+      "n_items": 36
+    },
+    {
+      "name": "shorter-sentence-heuristic",
+      "overall": 0.5277777777777778,
+      "by_phenomenon": {
+        "island": 0.6666666666666666,
+        "npi": 0.4583333333333333,
+        "that-trace": 0.4583333333333333
+      },
+      "position_bias": 0.05555555555555558,
+      "n_items": 36
     },
     {
       "name": "always-first",
       "overall": 0.5,
       "by_phenomenon": {
-        "agreement": 0.5,
-        "filler_gap": 0.5,
-        "npi": 0.5
+        "island": 0.5,
+        "npi": 0.5,
+        "that-trace": 0.5
       },
       "position_bias": 1.0,
-      "n_items": 15
+      "n_items": 36
     },
     {
       "name": "random-baseline",
-      "overall": 0.4,
+      "overall": 0.4444444444444444,
       "by_phenomenon": {
-        "agreement": 0.5,
-        "filler_gap": 0.2,
-        "npi": 0.5
+        "island": 0.4583333333333333,
+        "npi": 0.4166666666666667,
+        "that-trace": 0.4583333333333333
       },
-      "position_bias": 0.26666666666666666,
-      "n_items": 15
+      "position_bias": 0.0,
+      "n_items": 36
     }
   ]
 }
