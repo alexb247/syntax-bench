@@ -7,47 +7,47 @@
   "models": [
     {
       "name": "anthropic:claude-opus-4-8",
-      "overall": 1.0,
+      "overall": 0.9901315789473685,
       "by_phenomenon": {
-        "island": 1.0,
-        "npi": 1.0,
+        "island": 0.9903846153846154,
+        "npi": 0.98,
         "that-trace": 1.0
       },
-      "position_bias": 0.0,
-      "n_items": 36
+      "position_bias": 0.019736842105263164,
+      "n_items": 152
     },
     {
       "name": "anthropic:claude-haiku-4-5-20251001",
-      "overall": 0.9722222222222222,
+      "overall": 0.9605263157894737,
       "by_phenomenon": {
-        "island": 0.9166666666666666,
-        "npi": 1.0,
-        "that-trace": 1.0
+        "island": 0.9230769230769231,
+        "npi": 0.98,
+        "that-trace": 0.98
       },
-      "position_bias": 0.05555555555555558,
-      "n_items": 36
+      "position_bias": 0.026315789473684292,
+      "n_items": 152
     },
     {
       "name": "anthropic:claude-sonnet-4-6",
-      "overall": 0.9444444444444444,
+      "overall": 0.9375,
       "by_phenomenon": {
-        "island": 0.9166666666666666,
-        "npi": 0.9583333333333334,
-        "that-trace": 0.9583333333333334
+        "island": 0.9326923076923077,
+        "npi": 0.88,
+        "that-trace": 1.0
       },
-      "position_bias": 0.11111111111111116,
-      "n_items": 36
+      "position_bias": 0.125,
+      "n_items": 152
     },
     {
       "name": "shorter-sentence-heuristic",
-      "overall": 0.5277777777777778,
+      "overall": 0.5427631578947368,
       "by_phenomenon": {
-        "island": 0.6666666666666666,
-        "npi": 0.4583333333333333,
-        "that-trace": 0.4583333333333333
+        "island": 0.7403846153846154,
+        "npi": 0.4,
+        "that-trace": 0.48
       },
-      "position_bias": 0.05555555555555558,
-      "n_items": 36
+      "position_bias": 0.03289473684210531,
+      "n_items": 152
     },
     {
       "name": "always-first",
@@ -58,18 +58,18 @@
         "that-trace": 0.5
       },
       "position_bias": 1.0,
-      "n_items": 36
+      "n_items": 152
     },
     {
       "name": "random-baseline",
-      "overall": 0.4444444444444444,
+      "overall": 0.4440789473684211,
       "by_phenomenon": {
-        "island": 0.4583333333333333,
-        "npi": 0.4166666666666667,
-        "that-trace": 0.4583333333333333
+        "island": 0.4519230769230769,
+        "npi": 0.4,
+        "that-trace": 0.48
       },
-      "position_bias": 0.0,
-      "n_items": 36
+      "position_bias": 0.0460526315789474,
+      "n_items": 152
     }
   ]
 }
