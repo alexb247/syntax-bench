@@ -19,15 +19,17 @@ tested in both presentation orders.
   reverses when the same two sentences are swapped. It is not that the models
   cannot tell the sentences apart; it is that the judgment is not stable.
 - **Position robustness is not monotonic with model size.** The mid-sized model
-  (Sonnet) is the *least* order-robust of the three (position-bias around 12,
-  versus about 2 for both the smaller Haiku and the larger Opus). Bigger is not
-  reliably steadier.
+  (Sonnet) is the *least* order-robust of the three, with a position bias of 12.4
+  versus about 2 for both the smaller Haiku and the larger Opus. This held across
+  five independently generated item banks (Sonnet 12.4 ± 0.7), so it is a stable
+  property, not an artifact of one sample. Bigger is not reliably steadier.
 - **The NPI weakness is specific and explainable.** Where Sonnet dips, the misses
   concentrate on idiomatic *minimizer* NPIs ("lift a finger," "in the slightest"),
   not on negative polarity in general. Plain "ever" and "at all" are handled
   cleanly. So the gap is about low-frequency idioms, not the underlying licensing.
 
-These are hypotheses on a small item set, not settled claims (see Limitations).
+The headline order-sensitivity result is stable across five seeds; the per-phenomenon
+subscores carry more variance and are read as suggestive (see Limitations).
 
 ## Method
 
@@ -85,9 +87,10 @@ items with weak bridge verbs that muddied the grammatical member.
   confound-free phenomena are that-trace and NPI, where the heuristic sits at chance.
   Measuring islands properly requires a factorial, probability-based design that
   subtracts a complexity baseline; that is the planned v2.
-- **Small item counts.** Tens of items per phenomenon make the model-to-model gaps
-  suggestive, not conclusive. Scaling further and running multiple seeds is the next
-  step before any difference is claimed as real.
+- **Item counts.** Tens of items per phenomenon means individual subscores carry
+  real variance (NPI ranges about ± 3 across seeds). The headline position-robustness
+  result, however, is stable across five independently generated seeds, so the
+  model-to-model gap there can be stated with confidence (`multiseed.py`).
 - **Single prompt, single decoding.** Results reflect one prompt template and one
   forced-choice elicitation. A robustness check across prompts is future work.
 
@@ -135,5 +138,6 @@ syntaxbench/models.py      model interface, baselines, Claude/OpenAI adapters
 syntaxbench/harness.py     two-order evaluation
 syntaxbench/report.py      leaderboard table and JSON export
 run.py                     entry point, writes results.json
+multiseed.py               multi-seed stability run (mean +/- sd across seeds)
 index.html                 the deployed leaderboard
 ```
