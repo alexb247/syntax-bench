@@ -53,12 +53,12 @@ so only the structural feature varies. The starred member is ungrammatical.
 
 - **That-trace.** Object extraction across overt *that* is fine; subject extraction
   is barred. Both members keep *that* and are the same length.
-  *Who do you believe that the board hired?* vs *\*Who do you believe that hired the board?*
+  `Who do you believe that the board hired?` vs `*Who do you believe that hired the board?`
 - **NPI in the restrictor.** A negative-polarity item is licensed in the
   downward-entailing restrictor of *every* but not in its upward-entailing scope.
   Both members use the same words; only the NPI moves.
-  *Every author who had ever missed a deadline was dropped.* vs
-  *\*Every author who was dropped had ever missed a deadline.*
+  `Every author who had ever missed a deadline was dropped.` vs
+  `*Every author who was dropped had ever missed a deadline.`
 - **Islands.** Extraction is barred out of islands (adjunct, complex noun phrase,
   *wh*, and subject). Tested across four subtypes. See Limitations: island items
   carry an unavoidable length confound in a forced-choice format.
