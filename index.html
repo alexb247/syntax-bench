@@ -202,7 +202,14 @@
     padding:.5rem .2rem;
   }
   .field input::placeholder{color:var(--ink-3)}
-  .field input:disabled{cursor:not-allowed}
+  .field .ex{
+    font-family:var(--serif);
+    font-size:1.02rem;
+    color:var(--ink);
+    padding:.5rem .2rem;
+    border-bottom:1px solid var(--rule);
+    display:block;
+  }
   .try .action{display:flex;align-items:center;gap:1rem;margin-top:1.3rem;flex-wrap:wrap}
   .btn{
     font-family:var(--mono);
@@ -214,9 +221,12 @@
     border:1px solid var(--ink);
     background:var(--ink);
     color:#fff;
-    opacity:.4;
-    cursor:not-allowed;
+    text-decoration:none;
+    display:inline-block;
+    cursor:pointer;
+    transition:background .15s,border-color .15s;
   }
+  .btn:hover{background:var(--red);border-color:var(--red)}
   .try .note{font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}
   .try .note b{color:var(--ink);font-weight:600}
 
@@ -290,16 +300,16 @@
 
   <section class="try">
     <div class="shead">
-      <span class="eyebrow">Try your own pair</span>
-      <span class="count">next</span>
+      <span class="eyebrow">Run your own pairs</span>
+      <span class="count">open source</span>
     </div>
     <div class="panel">
-      <p>Enter a grammatical sentence and a minimal variant, and watch each model judge which one is acceptable, live.</p>
-      <div class="field"><span class="mark">&nbsp;</span><input type="text" disabled placeholder="The key to the cabinets is on the table."></div>
-      <div class="field"><span class="mark bad">*</span><input type="text" disabled placeholder="The key to the cabinets are on the table."></div>
+      <p>Want to test a minimal pair of your own? The benchmark is a small open-source harness. Add your pair to the dataset, set your API key, and one command runs every model over it in both orders.</p>
+      <div class="field"><span class="mark">&nbsp;</span><span class="ex">Who do you believe that the board hired?</span></div>
+      <div class="field"><span class="mark bad">*</span><span class="ex">Who do you believe that hired the board?</span></div>
       <div class="action">
-        <button class="btn" disabled>Judge this pair</button>
-        <span class="note"><b>Live judging connects next</b>, once the model backend is wired in.</span>
+        <a class="btn" href="https://github.com/alexb247/syntax-bench">Get the code</a>
+        <span class="note">Judging runs from the repo with your own key, so the leaderboard stays reproducible and no key is ever exposed in the browser.</span>
       </div>
     </div>
   </section>
