@@ -3,5 +3,10 @@
 
 # openai>=1.0          # for OpenAIModel
 # anthropic>=0.40      # for AnthropicModel
-# transformers>=4.44   # for HuggingFaceModel (open models, run locally)
-# torch>=2.0           # backend for transformers
+
+# Optional extra for the v2 factorial island study (factorial_islands.py),
+# which scores sentences by local gpt2 surprisal, and for HuggingFaceModel.
+# The core harness (run.py, multiseed.py) never needs these.
+# Enable with:  pip3 install transformers torch
+# transformers>=4.44
+# torch>=2.0
