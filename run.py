@@ -2,36 +2,50 @@
 
     python run.py
 
-By default it runs the no-API-key baselines so the pipeline works out of the
-box. Register real models in build_models() to populate the leaderboard.
+Baselines always run, with no API key and nothing to install. If the
+ANTHROPIC_API_KEY environment variable is set, three sizes of Claude are added
+to the board automatically, so you can see whether a larger model judges
+grammar better.
 """
 
 import argparse
+import os
 
 from syntaxbench.data import load_pairs
 from syntaxbench.harness import evaluate
 from syntaxbench.models import (
     AlwaysFirst,
+    AnthropicModel,
     Model,
     RandomBaseline,
     ShorterSentence,
-    # OpenAIModel,      # uncomment once you have a key wired in
-    # AnthropicModel,
-    # HuggingFaceModel,
+    # OpenAIModel,        # set OPENAI_API_KEY and register below to add GPT
+    # HuggingFaceModel,   # add an open model for an open-vs-closed comparison
 )
 from syntaxbench.report import leaderboard_table, write_json
 
 
 def build_models() -> list[Model]:
-    """The models to evaluate. Add real ones here."""
-    return [
-        RandomBaseline(),
-        AlwaysFirst(),
-        ShorterSentence(),
-        # OpenAIModel("gpt-4o-mini"),
-        # AnthropicModel("claude-haiku-4-5-20251001"),
-        # HuggingFaceModel("meta-llama/Llama-3.2-1B-Instruct"),
-    ]
+    """The models to evaluate. Baselines always run; real models are added when
+    their API key is present, so the script never crashes for missing keys."""
+    models: list[Model] = [RandomBaseline(), AlwaysFirst(), ShorterSentence()]
+
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        try:
+            models += [
+                AnthropicModel("claude-haiku-4-5-20251001"),
+                AnthropicModel("claude-sonnet-4-6"),
+                AnthropicModel("claude-opus-4-8"),
+            ]
+            print("Added Claude: haiku, sonnet, opus.\n")
+        except Exception as e:
+            print(f"ANTHROPIC_API_KEY is set but Claude could not start: {e}")
+            print("If this mentions a missing module, run: pip3 install anthropic\n")
+    else:
+        print("No ANTHROPIC_API_KEY found, so the board shows baselines only.")
+        print('Add Claude with:  export ANTHROPIC_API_KEY="sk-ant-..."\n')
+
+    return models
 
 
 def main() -> None:

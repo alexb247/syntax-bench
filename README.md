@@ -27,6 +27,11 @@ tested in both presentation orders.
   concentrate on idiomatic *minimizer* NPIs ("lift a finger," "in the slightest"),
   not on negative polarity in general. Plain "ever" and "at all" are handled
   cleanly. So the gap is about low-frequency idioms, not the underlying licensing.
+- **Measured without the confound, islands are real but not uniform (v2).** A
+  factorial surprisal study with a local open model shows clear super-additive
+  island effects for subject, adjunct, and complex-NP islands, and an effect
+  indistinguishable from zero for the *wh*-island, the weak, gradient case in
+  the human literature. See the v2 section below.
 
 The headline order-sensitivity result is stable across five seeds; the per-phenomenon
 subscores carry more variance and are read as suggestive (see Limitations).
@@ -86,7 +91,8 @@ items with weak bridge verbs that muddied the grammatical member.
   must therefore be read against that baseline, not at face value. The clean,
   confound-free phenomena are that-trace and NPI, where the heuristic sits at chance.
   Measuring islands properly requires a factorial, probability-based design that
-  subtracts a complexity baseline; that is the planned v2.
+  subtracts a complexity baseline; **v2 below does exactly that**, and the
+  forced-choice island column stays only for comparison.
 - **Item counts.** Tens of items per phenomenon means individual subscores carry
   real variance (NPI ranges about ± 3 across seeds). The headline position-robustness
   result, however, is stable across five independently generated seeds, so the
@@ -110,13 +116,57 @@ _152-item validated bank, three Claude models, run June 2026._
 | always-first (baseline) | 50.0 | 50.0 | 50.0 | 50.0 | 100.0 |
 | random (baseline) | 44.4 | 48.0 | 40.0 | 45.2 | 4.6 |
 
-\* Island accuracy is length-confounded; see Limitations.
+\* Island accuracy is length-confounded; see Limitations and the v2 study below.
+
+## v2: The factorial island study
+
+Forced choice cannot measure islands cleanly, because the island structure is
+inherently longer and rarer than its control (see Limitations). v2 measures
+islands the way the experimental syntax literature does. Each item is a matched
+**quadruple** crossing [island vs non-island structure] x [extraction vs
+no-extraction], with lexical content held constant, and the island effect is the
+interaction, a difference in differences on total surprisal:
+
+```
+DiD = (island+extraction - island control) - (non-island+extraction - non-island control)
+```
+
+The structure's own cost appears in both of its conditions, and the extraction's
+own cost appears on both sides, so both subtract out. A positive DiD means
+extraction costs more inside the island than the parts predict on their own
+(super-additivity), which is the island effect itself, with no length confound.
+
+Surprisal needs token-level probabilities, which frontier APIs do not expose, so
+v2 scores with a local open model (gpt2) and runs free with no key. Each study
+uses the instrument its models allow: forced choice for API models, surprisal
+for open ones.
+
+Results: 12 quadruples per subtype, total surprisal in nats, percentile
+bootstrap 95% CI over items.
+
+| island subtype | interaction (DiD) | 95% CI |
+| --- | --- | --- |
+| subject | +8.66 | [+6.38, +11.05] |
+| adjunct | +2.96 | [+1.83, +4.07] |
+| complex NP | +2.91 | [+1.61, +4.25] |
+| wh | +0.59 | [-0.09, +1.22] |
+
+Three of the four subtypes show a clearly positive interaction: gpt2 penalizes
+extraction out of subject, adjunct, and complex-NP islands beyond the additive
+costs of the structure and the extraction. The *wh*-island interval straddles
+zero, and that is a coherent result rather than a failure: *wh*-islands are the
+weak, gradient case in the human acceptability literature, and that is how they
+come out once the length confound is subtracted away. Extending v2 beyond gpt2
+to larger open models is the natural next step.
 
 ## Running it
 
 ```bash
 python generate_items.py     # (re)build the item bank, reproducible
 python run.py                # run baselines; add Claude with a key (below)
+python test_factorial.py     # v2 tests, stdlib only
+python generate_factorial.py # (re)build the factorial quadruples
+python factorial_islands.py  # v2 island study, local gpt2, free, no key
 ```
 
 The baselines run with no key and nothing to install. To add the Claude models,
@@ -133,10 +183,16 @@ python run.py
 ```
 generate_items.py          template item generator (fixed seed)
 data/minimal_pairs.jsonl   the generated item bank
+generate_factorial.py      v2: matched 2x2 island quadruples (fixed seed)
+data/factorial_islands.jsonl  the generated factorial bank
 syntaxbench/data.py        loading and validation
 syntaxbench/models.py      model interface, baselines, Claude/OpenAI adapters
 syntaxbench/harness.py     two-order evaluation
 syntaxbench/report.py      leaderboard table and JSON export
+syntaxbench/factorial.py   v2: quadruple loading, DiD and bootstrap math
+syntaxbench/surprisal.py   v2: local-model surprisal (the only torch module)
+factorial_islands.py       v2 entry point, writes factorial_results.json
+test_factorial.py          v2 tests (no torch needed)
 run.py                     entry point, writes results.json
 multiseed.py               multi-seed stability run (mean +/- sd across seeds)
 index.html                 the deployed leaderboard

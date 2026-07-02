@@ -1,0 +1,47 @@
+{
+  "anthropic:claude-haiku-4-5-20251001": [
+    "tt-004",
+    "tt-035",
+    "npi-006",
+    "npi-019",
+    "npi-050",
+    "isl-008",
+    "isl-027",
+    "isl-032",
+    "isl-043",
+    "isl-044",
+    "isl-051",
+    "isl-052"
+  ],
+  "anthropic:claude-sonnet-4-6": [
+    "tt-008",
+    "tt-031",
+    "npi-001",
+    "npi-006",
+    "npi-007",
+    "npi-013",
+    "npi-017",
+    "npi-019",
+    "npi-025",
+    "npi-027",
+    "npi-029",
+    "npi-030",
+    "npi-041",
+    "npi-043",
+    "npi-047",
+    "npi-048",
+    "isl-005",
+    "isl-008",
+    "isl-014",
+    "isl-015",
+    "isl-021",
+    "isl-024",
+    "isl-026"
+  ],
+  "anthropic:claude-opus-4-8": [
+    "npi-012",
+    "npi-019",
+    "isl-008",
+    "isl-020"
+  ]
+}

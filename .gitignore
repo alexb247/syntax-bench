@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+CLAUDE.md
+
+# local model caches, in case a HF cache dir ever lands in the repo
+.cache/
+huggingface/

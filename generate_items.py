@@ -38,8 +38,7 @@ TT_WH = ["Who", "Which candidate", "Which lawyer", "Which official", "Which mana
          "Which suspect", "Which witness", "Which student"]
 TT_MATRIX = ["do you", "do they", "do we", "does she", "does he", "did you",
              "did they", "did she", "did he", "did the senator", "did the reporter"]
-TT_MVERB = ["believe", "think", "suppose", "imagine", "assume", "claim", "expect",
-            "figure", "guess", "decide", "conclude", "argue", "insist"]
+TT_MVERB = ["believe", "think", "suppose", "imagine", "assume", "claim", "say"]
 TT_NP = ["the board", "the manager", "the committee", "the agency", "the senator",
          "the panel", "the judge", "the coach", "the editor", "the officer",
          "the director", "the jury", "the firm", "the council", "the dean"]
@@ -103,7 +102,7 @@ ISL_ADJ_BRIDGE = ["say", "claim", "argue", "insist", "mention", "reveal", "admit
 ISL_ADJ_ESUBJ = ["he", "she", "they", "the staff", "the team", "the committee"]
 ISL_ADJ_EVERB = ["reviewed", "revised", "approved", "rejected", "edited",
                  "signed", "leaked", "drafted", "finalized", "released"]
-ISL_ADJ_INTRANS = ["resign", "cry", "quit", "leave", "celebrate", "panic", "object", "relax"]
+ISL_ADJ_INTRANS = ["resign", "cry", "panic", "object", "relax", "sulk", "faint", "sigh"]
 ISL_ADJ_CONJ = ["after", "before", "because", "when", "while"]
 
 def make_isl_adjunct():
